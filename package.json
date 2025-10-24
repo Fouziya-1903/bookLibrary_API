@@ -1,0 +1,16 @@
+{
+  "name": "booklibrary_api",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "This is a bookLibrary via API",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Fouziya and Faisal",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2"
+  }
+}
