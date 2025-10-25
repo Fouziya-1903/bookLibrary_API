@@ -15,7 +15,10 @@ export function addBook(req,res){
         author,
         year,
         genre,
-        // addedBy: req.user.id
+        addedBy: {
+            id: req.user.id , 
+            email: req.user.email
+        }
     };
     
 
@@ -25,7 +28,8 @@ export function addBook(req,res){
             msg: "The book already exists"
         })
     }
-    
+
+    bookId++;
     books.push(newBook);
     
 
