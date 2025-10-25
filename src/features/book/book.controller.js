@@ -1,47 +1,69 @@
 let books = [];
 let bookId = 1;
 
-export function addBook(req,res){
-    const {title,author,year,genre} = req.body;
+export function addBook(req, res) {
+  const { title, author, year, genre } = req.body;
 
-    if(!title || !author || !year || !genre){
-        return res.status(400).json({
-            msg: "All the fields are required!!.."
-        });
-    }
-    const newBook = {
-        id: bookId,
-        title,
-        author,
-        year,
-        genre,
-        addedBy: {
-            id: req.user.id , 
-            email: req.user.email
-        }
-    };
-    
+  if (!title || !author || !year || !genre) {
+    return res.status(400).json({
+      msg: "All the fields (title, author, year, genre) are required!.",
+    });
+  }
 
-    const bookExist = books.find((b)=>b.title == title && b.author == author );
-    if(bookExist){
-        return res.status(400).json({
-            msg: "The book already exists"
-        })
-    }
+  const bookExist = books.find(
+    (b) =>
+      b.title.toLowerCase() == title.toLowerCase() &&
+      b.author.toLowerCase() == author.toLowerCase()
+  );
 
-    bookId++;
-    books.push(newBook);
-    
+  if (bookExist) {
+    return res.status(400).json({
+      msg: "The book with this title and author already exists",
+    });
+  }
 
+  const newBook = {
+    id: bookId,
+    title,
+    author,
+    year,
+    genre,
+    addedBy: {
+      id: req.user.id,
+      email: req.user.email,
+    },
+  };
 
-    res.status(201).json({
-        msg: `hurray!!... new book has been added!!`,book:newBook
-    })
+  books.push(newBook);
+  bookId++;
 
+  res.status(201).json({
+    msg: "Hurray! New book has been added.",
+    book: newBook,
+  });
 }
 
-export function getAllBooks(req,res){
-    return res.json({
-        totalBooks : 'total Book',book:books
-    });
+export function getAllBooks(req, res) {
+  return res.json({
+    totalBooks: books.length,
+    books: books,
+  });
+}
+
+export function getBook(req, res) {
+  const { title } = req.query;
+
+  if (!title) {
+    return res.status(400).json({ msg: "Title is required" });
+  }
+
+  const book = books.find(
+    (b) => b.title.toLowerCase() === title.toLowerCase()
+  );
+
+  if (!book) {
+    return res.status(404).json({ msg: "Book not found" });
+  }
+
+  return res.json(book);
 }
