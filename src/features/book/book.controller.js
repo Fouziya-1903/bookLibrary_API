@@ -67,3 +67,31 @@ export function getBook(req, res) {
 
   return res.json(book);
 }
+
+export function bookUpdate(req,res){
+
+    const { title: queryTitle } = req.query;
+
+    const book = books.find((b)=> b.title == queryTitle);
+
+    if(!book) return res.status(404).json({msg: "The book is not found"});
+
+    const {title,author,year,genre,} = req.body;
+
+    if(title) book.title = title;
+    if(author) book.author = author;
+    if(year) book.year = year;
+    if(genre) book.genre = genre;
+   
+    res.json({
+        msg: "Book is updated",
+        book
+    })
+}
+
+
+
+
+
+
+
